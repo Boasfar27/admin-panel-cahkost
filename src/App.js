@@ -1,24 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useState } from 'react';
+import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
+import Dashboard from './pages/Dashboard';
+import Kost from './pages/Kost';
+import Tenants from './pages/Tenants';
+import Transactions from './pages/Transactions';
 
 function App() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="flex">
+        {/* Sidebar */}
+        <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+
+        {/* Konten Utama */}
+        <div className="flex-1 md:ml-64">
+          <Navbar toggleSidebar={toggleSidebar} />
+          <div className="p-6">
+            <Routes>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/kost" element={<Kost />} />
+              <Route path="/tenants" element={<Tenants />} />
+              <Route path="/transactions" element={<Transactions />} />
+            </Routes>
+          </div>
+        </div>
+      </div>
+    </Router>
   );
 }
 
